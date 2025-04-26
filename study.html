@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الأستاذ/ محمد البنا</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to right, #f0f2f5, #e0f7fa);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #333;
+    }
+    header {
+      background-color: #00bfa5;
+      color: white;
+      padding: 20px;
+      font-size: 24px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .container {
+      padding: 20px;
+    }
+    .button {
+      background: #00bfa5;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .button:hover {
+      background: #009688;
+    }
+    #codeSection, #studySection {
+      display: none;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin: 10px;
+      width: 200px;
+    }
+    iframe {
+      width: 100%;
+      max-width: 500px;
+      height: 300px;
+      border: none;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  الأستاذ/ محمد البنا
+</header>
+
+<div class="container" id="mainMenu">
+  <h2>اختار طريقة الدخول:</h2>
+  <button class="button" onclick="showCodeSection()">دخول بالكود</button>
+  <button class="button" onclick="showStudySection()">دخول بدون كود</button>
+</div>
+
+<div class="container" id="codeSection">
+  <h2>ادخل الكود:</h2>
+  <input type="text" id="codeInput" placeholder="اكتب الكود هنا">
+  <button class="button" onclick="checkCode()">إرسال</button>
+  <div id="codeResult"></div>
+</div>
+
+<div class="container" id="studySection">
+  <h2>اختار المرحلة الدراسية:</h2>
+  <div class="grid">
+    <button class="button" onclick="loadClasses('اعدادي')">إعدادي</button>
+    <button class="button" onclick="loadClasses('ثانوي')">ثانوي</button>
+  </div>
+  <div id="classSelection"></div>
+  <div id="videoSection"></div>
+</div>
+
+<script>
+  const codes = {
+    "MK1": "https://www.youtube.com/embed/2goBSXAVbpc",
+    // ابعتلي بقي باقي الكودات اللي انت عايز تضيفها
+  };
+
+  const classes = {
+    "اعدادي": ["الصف الأول الإعدادي", "الصف الثاني الإعدادي", "الصف الثالث الإعدادي"],
+    "ثانوي": ["الصف الأول الثانوي", "الصف الثاني الثانوي", "الصف الثالث الثانوي"]
+  };
+
+  const videos = {
+    "الصف الأول الإعدادي": [
+      "https://www.youtube.com/embed/2goBSXAVbpc",
+      "https://www.youtube.com/embed/djbdf8DBm3U" // الفيديو الجديد
+    ],
+    // كمل بقي معايا لما تبعت باقي الروابط لكل صف
+  };
+
+  function showCodeSection() {
+    document.getElementById('mainMenu').style.display = 'none';
+    document.getElementById('codeSection').style.display = 'block';
+  }
+
+  function showStudySection() {
+    document.getElementById('mainMenu').style.display = 'none';
+    document.getElementById('studySection').style.display = 'block';
+  }
+
+  function checkCode() {
+    let code = document.getElementById('codeInput').value.trim();
+    let link = codes[code];
+    let result = document.getElementById('codeResult');
+    if(link) {
+      result.innerHTML = `<iframe src="${link}" allowfullscreen></iframe>`;
+    } else {
+      result.innerHTML = `<p style="color:red;">الكود غير صحيح!</p>`;
+    }
+  }
+
+  function loadClasses(stage) {
+    let classDiv = document.getElementById('classSelection');
+    classDiv.innerHTML = `<h3>اختر الصف:</h3>`;
+    classes[stage].forEach(cls => {
+      let btn = document.createElement('button');
+      btn.className = 'button';
+      btn.textContent = cls;
+      btn.onclick = () => loadVideos(cls);
+      classDiv.appendChild(btn);
+    });
+    document.getElementById('videoSection').innerHTML = '';
+  }
+
+  function loadVideos(cls) {
+    let videoDiv = document.getElementById('videoSection');
+    videoDiv.innerHTML = `<h3>فيديوهات ${cls}:</h3>`;
+    (videos[cls] || []).forEach(link => {
+      let iframe = document.createElement('iframe');
+      iframe.src = link;
+      videoDiv.appendChild(iframe);
+    });
+  }
+</script>
+
+</body>
+</html>
